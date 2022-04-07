@@ -1,25 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   libft_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sslowpok <sslowpok@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/30 09:58:35 by alex              #+#    #+#             */
-/*   Updated: 2022/04/07 15:22:23 by sslowpok         ###   ########.fr       */
+/*   Created: 2022/04/04 18:04:49 by sslowpok          #+#    #+#             */
+/*   Updated: 2022/04/07 13:59:34 by sslowpok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	main(int argc, char **argv)
+int	ft_strlen(char *s)
 {
-	t_philo	philo;
+	int	i;
 
-	if (!check_args(argc, argv))
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+int	ft_isdigit(int c)
+{
+	if (c > 47 && c < 58)
 		return (1);
-	input(argc, argv, &philo);
-	
-	
-	return (0);
+	else
+		return (0);
+}
+
+int	ft_strncmp(const char *s1, const char *s2, int n)
+{
+	int	i;
+
+	i = 0;
+	if (n == 0)
+		return (0);
+	while (s1[i] && s2[i])
+	{
+		if (s1[i] != s2[i] || i == n - 1)
+			break ;
+		i++;
+	}
+	return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
 }

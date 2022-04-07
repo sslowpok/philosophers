@@ -9,7 +9,11 @@ SRC_DIR =	./src/
 OBJ_DIR =	./obj/
 INC_DIR =	./includes/
 
-SRC_LIST =	main.c
+SRC_LIST =	main.c \
+			ft_atoi.c \
+			libft_utils.c \
+			args.c \
+			input.c
 
 OBJ_LIST =	$(SRC:%.c=%.o)
 
