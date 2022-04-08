@@ -6,7 +6,7 @@
 /*   By: sslowpok <sslowpok@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 14:05:13 by sslowpok          #+#    #+#             */
-/*   Updated: 2022/04/07 15:48:54 by sslowpok         ###   ########.fr       */
+/*   Updated: 2022/04/08 12:42:04 by sslowpok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,16 @@ int	check_args(int argc, char **argv)
 	if (!check_int(argc, argv))
 		return (str_error("Error: invalid argument\n"));
 	return (1);
+}
+
+void	input(int argc, char **argv, t_philo *philo)
+{
+	philo->args.count = ft_atoi(argv[1]);
+	philo->args.time_to_die = ft_atoi(argv[2]);
+	philo->args.time_to_eat = ft_atoi(argv[3]);
+	philo->args.time_to_sleep = ft_atoi(argv[4]);
+	if (argc == 6)
+		philo->args.num_of_eat = ft_atoi(argv[5]);
+	else if (argc == 5)
+		philo->args.num_of_eat= -1;
 }

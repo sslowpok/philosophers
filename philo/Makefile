@@ -13,7 +13,7 @@ SRC_LIST =	main.c \
 			ft_atoi.c \
 			libft_utils.c \
 			args.c \
-			input.c
+			init.c
 
 OBJ_LIST =	$(SRC:%.c=%.o)
 
