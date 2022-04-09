@@ -38,5 +38,6 @@ int		ft_isdigit(int c);
 int		ft_strncmp(const char *s1, const char *s2, int n);
 int		check_args(int argc, char **argv);
 int		str_error(char *s);
+void	input(int argc, char **argv, t_info *info);
 
 #endif
