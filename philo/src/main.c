@@ -6,7 +6,7 @@
 /*   By: sslowpok <sslowpok@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 09:58:35 by alex              #+#    #+#             */
-/*   Updated: 2022/04/09 12:38:02 by sslowpok         ###   ########.fr       */
+/*   Updated: 2022/04/09 14:11:53 by sslowpok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	*routine(void *data)
 {
 	(void)	data;
-	printf("Philo created!\n");
+	printf("Text from routine\n");
 	return ((void *)0);
 }
 
@@ -29,14 +29,16 @@ int	init_philos(t_philo *philos, int num)
 	i = -1;
 	while (++i < num)
 	{
-		philos[i].id = pthread_create(&philos[i].thread, NULL, routine, philos + i);
-		if (philos[i].id != 0)
+		if (pthread_create(&philos[i].thread, NULL, routine, philos + i) != 0)
 		{
-			printf("Thread create error\n");
+			printf("Thread creation error\n");
 			return (0);
 		}
+		philos[i].id = i;
+		printf("Philo %d created\n", philos[i].id);
 		// pthread_join(philos[i].thread, 0);
 	}
+	
 	return (1);
 }
 

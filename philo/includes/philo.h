@@ -18,6 +18,7 @@ typedef struct s_philo
 	t_mutex		*left_fork;
 	t_mutex		*right_fork;
 	t_mutex		*print;
+	t_mutex		mutex;
 }			t_philo;
 
 typedef struct s_info
