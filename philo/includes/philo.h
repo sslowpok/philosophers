@@ -23,6 +23,7 @@ typedef struct s_philo
 {
 	
 	int				id;
+	int				leftfirst;
 	unsigned long	lasttime;
 	unsigned long	starttime;
 	t_mutex			*left_fork;
@@ -38,6 +39,7 @@ typedef struct s_info
 	t_input			input;
 	t_philo			*philos;
 	t_mutex			*forks;
+	unsigned long	starttime;
 }			t_info;
 
 int		ft_atoi(const char *str);
