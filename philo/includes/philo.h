@@ -23,6 +23,7 @@ typedef struct s_philo
 {
 	
 	int				id;
+	int				xate;
 	int				leftfirst;
 	unsigned long	lasttime;
 	unsigned long	starttime;
@@ -39,6 +40,7 @@ typedef struct s_info
 	t_input			input;
 	t_philo			*philos;
 	t_mutex			*forks;
+	t_mutex			*print;
 	unsigned long	starttime;
 }			t_info;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sslowpok <sslowpok@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 09:58:35 by alex              #+#    #+#             */
-/*   Updated: 2022/04/10 16:36:17 by sslowpok         ###   ########.fr       */
+/*   Updated: 2022/04/11 11:55:44 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,18 @@ int	take_forks(t_philo *philo)
 {
 	// if (philo->num of meals)
 
-	// if ()
-
-	pthread_mutex_lock(philo->left_fork);
-	philo_print("has taken a fork\n", NULL, philo);
-	pthread_mutex_lock(philo->right_fork);
+	if (philo->leftfirst)
+	{
+		pthread_mutex_lock(philo->left_fork);
+		philo_print("has taken a fork", NULL, philo);
+		pthread_mutex_lock(philo->right_fork);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->right_fork);
+		philo_print("has taken a fork", NULL, philo);
+		pthread_mutex_lock(philo->left_fork);
+	}
 	philo_print("has taken a fork", "is eating", philo);
 	return (1);
 }
@@ -63,13 +70,15 @@ void	drop_forks(t_philo *philo)
 
 int	eat(t_philo *philo)
 {
+	usleep(1);
 	if (!take_forks(philo))
 		return (0);
 	pthread_mutex_lock(&philo->mutex);
-
+	philo->xate++;
+	philo->lasttime = get_time();
 	
 	pthread_mutex_unlock(&philo->mutex);
-	// mysleep(philo->t2eat)
+	my_sleep(philo->input.t2eat);
 	drop_forks(philo);
 	return (1);
 }
@@ -82,7 +91,6 @@ int	eat(t_philo *philo)
 void	*routine(void *data)
 {
 	t_philo	*philo;
-	
 	philo = (t_philo *)data;
 	while (1)
 	{
@@ -92,7 +100,7 @@ void	*routine(void *data)
 		// 	break ;
 	}
 
-	printf("Text from routine\n");
+	//printf("Text from routine\n");
 	return (0);
 }
 
@@ -105,43 +113,46 @@ void	copy_input(t_info *info, t_philo *philo)
 	philo->input.t2sleep = info->input.t2sleep;
 }
 
-int	init_philos(t_info *info, int num)
+int	init_philos(t_info *info)
 {
 	int	i;
 
 	info->starttime = get_time();
-	info->philos = malloc(sizeof(t_philo) * num);
+	info->philos = malloc(sizeof(t_philo) * info->input.num);
 	if (!info->philos)
 		return (0);
 	i = -1;
-	while (++i < num)
+	while (++i < info->input.num)
 	{
-		if (pthread_create(&info->philos[i].thread, NULL, routine, info->philos) != 0)
-		{
-			printf("Thread creation error\n");
-			return (0);
-		}
+		//if (pthread_create(&info->philos[i].thread, NULL, routine, info->philos) != 0)
+		//{
+		//	printf("Thread creation error\n");
+		//	return (0);
+		//}
+		info->philos[i].xate = 0;
 		info->philos[i].starttime = info->starttime;
 		info->philos[i].lasttime = info->starttime;
 		info->philos[i].id = i + 1;
 		info->philos[i].leftfirst = i % 2;
+		pthread_mutex_init(&info->philos[i].mutex, NULL);
 		copy_input(info, &info->philos[i]);
 		printf("Philo %d created\n", info->philos[i].id);
 	}
 	return (1);
 }
 
-int	init_forks(t_info *info, int num)
+int	init_forks(t_info *info)
 {
 	int	i;
 
 	i = 0;
-	info->forks = malloc(sizeof(t_mutex) * num);
+	info->forks = malloc(sizeof(t_mutex) * info->input.num);
 	if (!info->forks)
 		return (0);
 	pthread_mutex_init(&info->forks[0], NULL);
+	printf("Fork 0 created\n");
 	info->philos[0].right_fork = &info->forks[0];
-	while (++i < num)
+	while (++i < info->input.num)
 	{
 		pthread_mutex_init(&info->forks[i], NULL);
 		info->philos[i].right_fork = &info->forks[i];
@@ -152,6 +163,26 @@ int	init_forks(t_info *info, int num)
 	return (1);
 }
 
+int	create_threads(t_info *info)
+{
+	int	i;
+
+	i = 0;
+	if (pthread_mutex_init(&info->print, NULL) != 0)
+		return (0);
+	while (i < info->input.num)
+	{
+		info->philos[i].print = &info->print;
+		if (pthread_create(&info->philos[i].thread, NULL, &routine, \
+				(void *)&info->philos[i]))
+			rturn (0);
+		i++;
+		usleep(1);
+	}
+	return (1);
+	//IM HERE
+}
+
 int	main(int argc, char **argv)
 {
 	t_info	info;
@@ -159,8 +190,12 @@ int	main(int argc, char **argv)
 	if (!check_args(argc, argv))
 		return (1);
 	input(argc, argv, &info.input);
-	if (!init_philos(&info, info.input.num) || !init_forks(&info, info.input.num))
-		return (1);
+	init_philos(&info);
+	init_forks(&info);
+	
+
+	create_threads(&info);
+	
 	// unsigned long	time = get_time();
 	// printf("time = %lu\n", time);
 	// my_sleep(200);
