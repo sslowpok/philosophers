@@ -40,16 +40,24 @@ typedef struct s_info
 	t_input			input;
 	t_philo			*philos;
 	t_mutex			*forks;
-	t_mutex			*print;
+	t_mutex			print;
 	unsigned long	starttime;
 }			t_info;
 
-int		ft_atoi(const char *str);
-int		ft_strlen(char *s);
-int		ft_isdigit(int c);
-int		ft_strncmp(const char *s1, const char *s2, int n);
-int		check_args(int argc, char **argv);
-int		str_error(char *s);
-void	input(int argc, char **argv, t_input *info);
+int				ft_atoi(const char *str);
+int				ft_strlen(char *s);
+int				ft_isdigit(int c);
+int				ft_strncmp(const char *s1, const char *s2, int n);
+int				check_args(int argc, char **argv);
+int				str_error(char *s);
+void			input(int argc, char **argv, t_input *info);
+int				init_philos(t_info *info);
+int				init_forks(t_info *info);
+int				create_threads(t_info *info);
+void			*routine(void *data);
+void			copy_input(t_info *info, t_philo *philo);
+unsigned long	get_time(void);
+void			my_sleep(unsigned long ms);
+void	philo_print(char *s1, char *s2, t_philo *philo);
 
 #endif
