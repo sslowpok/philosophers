@@ -6,7 +6,7 @@
 /*   By: sslowpok <sslowpok@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 15:20:45 by sslowpok          #+#    #+#             */
-/*   Updated: 2022/04/11 16:39:45 by sslowpok         ###   ########.fr       */
+/*   Updated: 2022/04/12 16:44:50 by sslowpok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	init_philos(t_info *info)
 		info->philos[i].leftfirst = i % 2;
 		pthread_mutex_init(&info->philos[i].mutex, NULL);
 		copy_input(info, &info->philos[i]);
-		printf("Philo %d created\n", info->philos[i].id);
 	}
 	return (1);
 }
@@ -44,14 +43,12 @@ int	init_forks(t_info *info)
 	if (!info->forks)
 		return (0);
 	pthread_mutex_init(&info->forks[0], NULL);
-	printf("Fork 0 created\n");
 	info->philos[0].right_fork = &info->forks[0];
 	while (++i < info->input.num)
 	{
 		pthread_mutex_init(&info->forks[i], NULL);
 		info->philos[i].right_fork = &info->forks[i];
 		info->philos[i].left_fork = &info->forks[i - 1];
-		printf("Fork %d created\n", i);
 	}
 	info->philos[0].left_fork = &info->forks[i - 1];
 	return (1);
@@ -83,6 +80,33 @@ int	detach_threads(t_info *info)
 	return (1);
 }
 
+int	join_all_threads(t_info *info)
+{
+	int	i;
+
+	i = 0;
+	while (i < info->input.num)
+	{
+		if (pthread_join(info->philos[i].thread, NULL) != 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	manage_meals(t_info *info, int i)
+{
+	pthread_mutex_lock(&info->philos[i].mutex);
+	if (info->philos[i].xate >= info->input.num_of_meals)
+	{
+		pthread_mutex_unlock(&info->philos[i].mutex);
+		join_all_threads(info);
+		return (0);
+	}
+	pthread_mutex_unlock(&info->philos[i].mutex);
+	return (1);
+}
+
 void	check_dead(t_info *info)
 {
 	int	i;
@@ -101,8 +125,11 @@ void	check_dead(t_info *info)
 					info->philos[i].id);
 			return ;
 		}
-
-		
+		else if (info->input.num_of_meals != -1)
+		{
+			if (!manage_meals(info, i))
+				return ;
+		}
 		i++;
 	}
 }

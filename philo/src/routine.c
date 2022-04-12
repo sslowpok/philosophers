@@ -6,16 +6,28 @@
 /*   By: sslowpok <sslowpok@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 15:22:00 by sslowpok          #+#    #+#             */
-/*   Updated: 2022/04/11 16:28:37 by sslowpok         ###   ########.fr       */
+/*   Updated: 2022/04/12 16:47:46 by sslowpok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
+int	count_meals(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->mutex);
+	if (philo->xate >= philo->input.num_of_meals)
+	{
+		pthread_mutex_unlock(&philo->mutex);
+		return (0);
+	}
+	pthread_mutex_unlock(&philo->mutex);
+	return (1);
+}
+
 int	take_forks(t_philo *philo)
 {
-	// if (philo->num of meals)
-
+	if (!count_meals(philo) && philo->input.num_of_meals > 0)
+		return (0);
 	if (philo->leftfirst)
 	{
 		pthread_mutex_lock(philo->left_fork);
@@ -40,7 +52,7 @@ void	drop_forks(t_philo *philo)
 
 int	eat(t_philo *philo)
 {
-	// usleep(1);
+	usleep(1);
 	if (!take_forks(philo))
 		return (0);
 	pthread_mutex_lock(&philo->mutex);
@@ -55,7 +67,8 @@ int	eat(t_philo *philo)
 
 int	sleep_think(t_philo *philo)
 {
-	// if (num_meals ...)
+	if (!count_meals(philo) && philo->input.num_of_meals > 0)
+		return (0);
 
 	philo_print("is sleeping", NULL, philo);
 	my_sleep(philo->input.t2sleep);
