@@ -58,6 +58,12 @@ void			*routine(void *data);
 void			copy_input(t_info *info, t_philo *philo);
 unsigned long	get_time(void);
 void			my_sleep(unsigned long ms);
-void	philo_print(char *s1, char *s2, t_philo *philo);
+void			philo_print(char *s1, char *s2, t_philo *philo);
+int				count_meals(t_philo *philo);
+int				take_forks(t_philo *philo);
+void			drop_forks(t_philo *philo);
+int	join_all_threads(t_info *info);
+int	detach_threads(t_info *info);
+int	is_dead(t_philo *philo);
 
 #endif

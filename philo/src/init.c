@@ -6,7 +6,7 @@
 /*   By: sslowpok <sslowpok@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 15:20:45 by sslowpok          #+#    #+#             */
-/*   Updated: 2022/04/12 16:44:50 by sslowpok         ###   ########.fr       */
+/*   Updated: 2022/04/12 17:25:20 by sslowpok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,46 +54,6 @@ int	init_forks(t_info *info)
 	return (1);
 }
 
-int	is_dead(t_philo *philo)
-{
-	unsigned long	now;
-
-	now = get_time();
-	pthread_mutex_lock(&philo->mutex);
-	if (now - philo->lasttime > philo->input.t2die)
-		return (1);
-	pthread_mutex_unlock(&philo->mutex);
-	return (0);
-}
-
-int	detach_threads(t_info *info)
-{
-	int	i;
-
-	i = 0;
-	while (i < info->input.num)
-	{
-		if (pthread_detach(info->philos[i].thread) != 0)
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int	join_all_threads(t_info *info)
-{
-	int	i;
-
-	i = 0;
-	while (i < info->input.num)
-	{
-		if (pthread_join(info->philos[i].thread, NULL) != 0)
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 int	manage_meals(t_info *info, int i)
 {
 	pthread_mutex_lock(&info->philos[i].mutex);
@@ -121,8 +81,8 @@ void	check_dead(t_info *info)
 			pthread_mutex_lock(info->philos[i].print);
 			detach_threads(info);
 			my_sleep(1);
-			printf("%lu philo %d died\n", get_time() - info->philos[i].starttime - 1, \
-					info->philos[i].id);
+			printf("%lu philo %d died\n", get_time() - \
+					info->philos[i].starttime - 1, info->philos[i].id);
 			return ;
 		}
 		else if (info->input.num_of_meals != -1)

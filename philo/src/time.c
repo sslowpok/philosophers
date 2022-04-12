@@ -6,7 +6,7 @@
 /*   By: sslowpok <sslowpok@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 15:23:21 by sslowpok          #+#    #+#             */
-/*   Updated: 2022/04/11 16:18:47 by sslowpok         ###   ########.fr       */
+/*   Updated: 2022/04/12 17:26:24 by sslowpok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,3 @@ void	my_sleep(unsigned long ms)
 		usleep(ms);
 	}
 }
-

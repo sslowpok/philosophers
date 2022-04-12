@@ -16,7 +16,9 @@ SRC_LIST =	main.c \
 			input.c \
 			init.c \
 			time.c \
-			routine.c
+			routine.c \
+			utils.c \
+			utils2.c
 
 OBJ_LIST =	$(SRC:%.c=%.o)
 
@@ -30,14 +32,14 @@ HEADERS =	$(addprefix $(INC_DIR), $(HEADERS_LIST))
 
 all:	$(NAME)
 
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADERS) | $(OBJ_DIR)
+		$(CC) $(CFLAGS) -c $< -o $@
+
 $(NAME):	$(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
 $(OBJ_DIR):
 		mkdir $(OBJ_DIR)
-
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADERS) | $(OBJ_DIR)
-		$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 		$(RM) $(OBJ_DIR)
@@ -45,4 +47,4 @@ clean:
 fclean:	clean
 		$(RM) $(NAME)
 
-re:	fclean all
+re:	fclean $(OBJ_DIR) all

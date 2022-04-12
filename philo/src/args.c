@@ -6,7 +6,7 @@
 /*   By: sslowpok <sslowpok@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 14:05:13 by sslowpok          #+#    #+#             */
-/*   Updated: 2022/04/07 15:48:54 by sslowpok         ###   ########.fr       */
+/*   Updated: 2022/04/12 17:24:34 by sslowpok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	check_digits(int argc, char **argv)
 {
 	int	i;
 	int	j;
-	
+
 	i = 1;
 	while (i < argc)
 	{
