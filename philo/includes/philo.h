@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sslowpok <sslowpok@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/14 16:02:34 by sslowpok          #+#    #+#             */
+/*   Updated: 2022/04/14 16:03:06 by sslowpok         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -12,7 +24,7 @@ typedef pthread_mutex_t	t_mutex;
 
 typedef struct s_input
 {
-	int	num;
+	int				num;
 	unsigned long	t2die;
 	unsigned long	t2eat;
 	unsigned long	t2sleep;
@@ -21,7 +33,6 @@ typedef struct s_input
 
 typedef struct s_philo
 {
-	
 	int				id;
 	int				xate;
 	int				leftfirst;
@@ -62,8 +73,8 @@ void			philo_print(char *s1, char *s2, t_philo *philo);
 int				count_meals(t_philo *philo);
 int				take_forks(t_philo *philo);
 void			drop_forks(t_philo *philo);
-int	join_all_threads(t_info *info);
-int	detach_threads(t_info *info);
-int	is_dead(t_philo *philo);
+int				join_all_threads(t_info *info);
+int				detach_threads(t_info *info);
+int				is_dead(t_philo *philo);
 
 #endif
