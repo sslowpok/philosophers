@@ -6,7 +6,7 @@
 /*   By: sslowpok <sslowpok@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 15:20:45 by sslowpok          #+#    #+#             */
-/*   Updated: 2022/04/14 13:43:54 by sslowpok         ###   ########.fr       */
+/*   Updated: 2022/04/14 15:59:36 by sslowpok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	init_forks(t_info *info)
 		return (0);
 	pthread_mutex_init(&info->forks[0], NULL);
 	info->philos[0].right_fork = &info->forks[0];
-	while (++i < info->input.num)
+	while (++i <= info->input.num)
 	{
 		pthread_mutex_init(&info->forks[i], NULL);
 		info->philos[i].right_fork = &info->forks[i];
@@ -93,10 +93,6 @@ void	check_dead(t_info *info)
 		i++;
 	}
 }
-
-/*
-**	при нечетном числе философов кто то дохнет
-*/
 
 int	create_threads(t_info *info)
 {
