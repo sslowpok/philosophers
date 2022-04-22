@@ -6,7 +6,7 @@
 /*   By: sslowpok <sslowpok@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 15:20:45 by sslowpok          #+#    #+#             */
-/*   Updated: 2022/04/14 15:59:36 by sslowpok         ###   ########.fr       */
+/*   Updated: 2022/04/22 16:36:21 by sslowpok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,18 @@ int	init_forks(t_info *info)
 {
 	int	i;
 
-	i = 0;
+	i = 1;
 	info->forks = malloc(sizeof(t_mutex) * info->input.num);
 	if (!info->forks)
 		return (0);
 	pthread_mutex_init(&info->forks[0], NULL);
 	info->philos[0].right_fork = &info->forks[0];
-	while (++i <= info->input.num)
+	while (i < info->input.num)
 	{
 		pthread_mutex_init(&info->forks[i], NULL);
 		info->philos[i].right_fork = &info->forks[i];
 		info->philos[i].left_fork = &info->forks[i - 1];
+		i++;
 	}
 	info->philos[0].left_fork = &info->forks[i - 1];
 	return (1);
